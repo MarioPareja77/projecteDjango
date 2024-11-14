@@ -8,38 +8,38 @@ from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.common.keys import Keys
 
 def test_login(self):
-    # Vamos a la página de login del admin
+    # Anem a la pàgina de login de l'administració
     self.selenium.get(f'{self.live_server_url}/admin/login/')
 
-    # Comprobamos que el título de la página es el esperado
+    # Comprovem que el títol de la pàgina és el que esperem
     self.assertEqual(self.selenium.title, "Log in | Django site admin")
 
-    # Introducimos las credenciales y hacemos clic en "Log in"
+    # Introduïm les credencials i fem clic a "Log in"
     username_input = self.selenium.find_element(By.NAME, "username")
     username_input.send_keys('isard')
     password_input = self.selenium.find_element(By.NAME, "password")
     password_input.send_keys('pirineus')
 
-    # Enviar el formulario
+    # Enviem el formulari
     login_button = self.selenium.find_element(By.XPATH, '//input[@value="Log in"]')
     login_button.send_keys(Keys.RETURN)
 
-    # Esperamos explícitamente a que el título de la página sea el esperado
+    # Esperem explícitament que el títol de la pàgina sigui el que esperem
     WebDriverWait(self.selenium, 3).until(
         EC.title_contains("Site administration")
     )
 
-    # Verificamos si hemos iniciado sesión correctamente
+    # Verifiquem si hem iniciat sessió correctament
     self.assertEqual(self.selenium.title, "Site administration | Django site admin")
     self.assertIn('/admin/', self.selenium.current_url)
 
-    # Navegamos a la página para añadir un nuevo usuario
+    # Anem a la pàgina per afegir un nou usuari
     self.selenium.get(f'{self.live_server_url}/admin/auth/user/add/')
 
-    # Comprobamos que el título de la página es el esperado para la creación de usuario
+    # Comprovem que el títol de la pàgina és el que esperem per a la creació d'un usuari
     self.assertEqual(self.selenium.title, "Add user | Django site admin")
 
-    # Introducimos los datos para el nuevo usuario
+    # Introduïm les dades pel nou usuari
     username_input = self.selenium.find_element(By.NAME, "username")
     username_input.send_keys("mparejanieto")
     password1_input = self.selenium.find_element(By.NAME, "password1")
@@ -47,14 +47,14 @@ def test_login(self):
     password2_input = self.selenium.find_element(By.NAME, "password2")
     password2_input.send_keys("1234")
 
-    # Guardamos el nuevo usuario haciendo clic en el botón "Save"
+    # Guardem el nou usuari fent clic al botó "Save"
     save_button = self.selenium.find_element(By.NAME, "_save")
     save_button.click()
 
-    # Esperamos que la página de confirmación o la lista de usuarios cargue
+    # Esperem que la pàgina de confirmació o la llista d'usuaris es carregui
     WebDriverWait(self.selenium, 10).until(
         EC.title_contains("Select user to change")
     )
 
-    # Verificamos que estamos en la página de selección de usuarios
+    # Verifiquem que estem a la pàgina de selecció d'usuaris
     self.assertEqual(self.selenium.title, "Select user to change | Django site admin")
